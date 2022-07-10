@@ -241,6 +241,8 @@ export const {{classname}}FetchParamCreator = function (configuration?: Configur
             localVarRequestOptions.body = localVarFormParams.toString();
     {{/hasFormParams}}
     {{#bodyParam}}
+            {{! Haim Kastner EDIT: Lint fix }}
+            // eslint-disable-next-line
             const needsSerialization = (<any>"{{dataType}}" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.body =  needsSerialization ? JSON.stringify({{paramName}} || {}) : ({{paramName}} || "");
     {{/bodyParam}}
