@@ -16,6 +16,8 @@ function App() {
 
     setSending(true);
     setFailed(false);
+    setPong(undefined);
+    
     try {
       const pong = await ApiFacade.StatusApi.ping(messageToSend, ping);
       setPong(pong);
@@ -33,27 +35,35 @@ function App() {
           Welcome to the React Type Script API Spec Example APP
         </p>
         <p>
-          For triggering an API call, please type any greeting message and press "SEND"
+          For triggering an API call, please type any greeting message and press "Send"
         </p>
         <p>
-          <input type={'text'} placeholder={'Type message to send...'} onKeyUp={(e) => setMessageToSend(e.target.value)} />
-          <input type={'text'} placeholder={'Type whois to send...'} onKeyUp={(e) => setWhoisToSend(e.target.value)} />
-          <button disabled={!messageToSend || !whoisToSend} onClick={sendPing}>
-            SEND
-          </button>
+          <div>
+            <div>
+              <input type={'text'} placeholder={'Type message to send...'} onKeyUp={(e) => setMessageToSend(e.target.value)} />
+            </div>
+            <div>
+              <input type={'text'} placeholder={'Type whois to send...'} onKeyUp={(e) => setWhoisToSend(e.target.value)} />
+
+            </div>
+            <div>
+            <input type={'submit'} value={'Send'} disabled={!messageToSend || !whoisToSend} onClick={sendPing} />
+            </div>
+          </div>
+
         </p>
         <p>
-          {failed && 'Send ping request failed' }
-          {sending && 'Awaiting Server...' }
-          {pong && 'API Server response:'}
+          {failed && 'Send ping request failed'}
+          {sending && 'Awaiting Server...'}
+          {pong && 'API Server pong response:'}
         </p>
         {
           !pong ? (failed || sending ? '' : '---No ping sent yet---') : <p>
             <div>
-              <input type={'text'} disabled={true} value={pong.greeting} />
+              <input type={'text'} disabled={true} value={pong.greeting} style={{ color: 'white'}} />
             </div>
             <div>
-              <input type={'text'} disabled={true} value={new Date(pong.time).toUTCString()} />
+              <input type={'text'} disabled={true} value={new Date(pong.time).toUTCString()} style={{ color: 'white'}} />
             </div>
           </p>
         }
@@ -64,7 +74,23 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Lean more: about generating and using API spec.
+          Node.JS API Spec Boilerplate
+        </a>
+        <a
+          className="App-link"
+          href="https://github.com/haimkastner/react-typescript-spec-facade"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          React TypeScript Spec Facade
+        </a>
+        <a
+          className="App-link"
+          href="https://app.swaggerhub.com/apis/haimkastner/node-api-spec-boilerplate"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          API Server Spec
         </a>
       </header>
     </div>

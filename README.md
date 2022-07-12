@@ -4,16 +4,21 @@ An example project of building API facade from API Server OpenAPI spec.
 
 
 
-The API Spec fetch from the [node-api-spec-boilerplate](https://github.com/haimkastner/node-api-spec-boilerplate) artifactory.
+API Spec fetched from the [node-api-spec-boilerplate](https://github.com/haimkastner/node-api-spec-boilerplate) artifactory.
+
 API facade built by [openapi-generator-cli](https://github.com/OpenAPITools/openapi-generator-cli) tool with custom [api.mustache](./resources/openapi/templates/typescript-axios/api.mustache) template based on [typescript-fetch](https://github.com/swagger-api/swagger-codegen/blob/master/modules/swagger-codegen/src/main/resources/typescript-fetch/api.mustache) template.
 
 ---
 
 ✨ Application Live [Demo](https://react-typescript-spec-facade.castnet.club/) ✨
 
+---
+
+Explorer the API Spec on [SwaggerHub](https://app.swaggerhub.com/apis/haimkastner/node-api-spec-boilerplate)
+
 ### `Configuration`
 
-All config by env vars, see for all options:
+All config by env vars, see for all options in [./env.example](./.env.example):
 * `REACT_APP_API_SERVER_URL`: The API Server URL, as default it's `http://127.0.0.1:8080`   
 * `API_SERVER_SPEC_BRANCH`: As default spec fetched from Server API [Actions artifactory](https://github.com/haimkastner/node-api-spec-boilerplate/actions) branch `main`, set this env var to other specific branch.
 * `API_SERVER_SPEC_PATH`: As default Api spec will be fetched from [node-api-spec-boilerplate artifactory](https://github.com/haimkastner/node-api-spec-boilerplate/actions), set this env var to copy from machine file-system instead, used for local debug and build.
