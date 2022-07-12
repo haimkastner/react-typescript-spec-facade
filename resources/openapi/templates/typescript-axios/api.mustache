@@ -380,8 +380,10 @@ export class {{classname}} extends BaseAPI {
 {{/operations}}{{/apis}}{{/apiInfo}}
 
 {{! Haim Kastner EDIT: Generage easy to use API Facade, with ready to use instances of each generated API class }}
-{{#apiInfo}}{{#apis}}
+{{#apiInfo}}
 export class ApiFacade {
+    {{#apis}}
     public static {{classname}} = new {{classname}}();
+    {{/apis}}
 }
-{{/apis}}{{/apiInfo}}
+{{/apiInfo}}
