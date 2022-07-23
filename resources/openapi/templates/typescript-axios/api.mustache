@@ -1,6 +1,6 @@
-{{! Haim Kastner EDIT: dont ref to custon decleration file }}
+{{! TEMPLATE EDIT: dont ref to custom deceleration file }}
 {{! /// <reference path="./custom.d.ts" /> }}
-{{! Haim Kastner EDIT: file source }}
+{{! TEMPLATE EDIT: file source }}
 {{! https://github.com/swagger-api/swagger-codegen/blob/master/modules/swagger-codegen/src/main/resources/typescript-fetch/api.mustache }}
 // tslint:disable
 {{>licenseInfo}}
@@ -8,10 +8,10 @@
 import * as url from "url";
 import { Configuration } from "./configuration";
 
-{{! Haim Kastner EDIT: use built-in fetch as API caller  }}
+{{! TEMPLATE EDIT: use built-in fetch as API caller  }}
 const portableFetch = fetch;
-{{! Haim Kastner EDIT: config API Server URL   }}
-const BASE_PATH = process.env.REACT_APP_API_SERVER_URL || 'http://127.0.0.1:8080'
+{{! TEMPLATE EDIT: config API Server URL   }}
+const BASE_PATH = process.env.REACT_APP_API_SERVER_URL || "{{{basePath}}}".replace(/\/+$/, "");
 
 
 /**
@@ -50,7 +50,7 @@ export interface FetchArgs {
  * @class BaseAPI
  */
 export class BaseAPI {
-    {{! Haim Kastner EDIT: TS fix }}
+    {{! TEMPLATE EDIT: TS fix }}
     protected configuration: Configuration | undefined;
 
     constructor(configuration?: Configuration, protected basePath: string = BASE_PATH, protected fetch: FetchAPI = portableFetch) {
@@ -68,7 +68,7 @@ export class BaseAPI {
  * @extends {Error}
  */
 export class RequiredError extends Error {
-    {{! Haim Kastner EDIT: TS fix }}
+    {{! TEMPLATE EDIT: TS fix }}
     name!: "RequiredError";
     constructor(public field: string, msg?: string) {
         super(msg);
@@ -233,7 +233,7 @@ export const {{classname}}FetchParamCreator = function (configuration?: Configur
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
 
-            {{! Haim Kastner EDIT: TS fix }}
+            {{! TEMPLATE EDIT: TS fix }}
             const anonimusObj = localVarUrlObj as any;
             delete anonimusObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
@@ -241,7 +241,7 @@ export const {{classname}}FetchParamCreator = function (configuration?: Configur
             localVarRequestOptions.body = localVarFormParams.toString();
     {{/hasFormParams}}
     {{#bodyParam}}
-            {{! Haim Kastner EDIT: Lint fix }}
+            {{! TEMPLATE EDIT: Lint fix }}
             // eslint-disable-next-line
             const needsSerialization = (<any>"{{dataType}}" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.body =  needsSerialization ? JSON.stringify({{paramName}} || {}) : ({{paramName}} || "");
@@ -370,7 +370,7 @@ export class {{classname}} extends BaseAPI {
      * @throws {RequiredError}
      * @memberof {{classname}}
      */
-    {{! Haim Kastner EDIT: Do not allow pass options }}
+    {{! TEMPLATE EDIT: Do not allow pass options }}
     public {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}) {
         return {{classname}}Fp(this.configuration).{{nickname}}({{#allParams}}{{paramName}}, {{/allParams}})(this.fetch, this.basePath);
     }
@@ -379,7 +379,7 @@ export class {{classname}} extends BaseAPI {
 }
 {{/operations}}{{/apis}}{{/apiInfo}}
 
-{{! Haim Kastner EDIT: Generage easy to use API Facade, with ready to use instances of each generated API class }}
+{{! TEMPLATE EDIT: Generage easy to use API Facade, with ready to use instances of each generated API class }}
 {{#apiInfo}}
 export class ApiFacade {
     {{#apis}}

@@ -12,8 +12,7 @@
 					"withInterfaces": true,
 					"typescriptThreePlus": true
 				},
-				"templateDir": "#{cwd}/resources/openapi/templates/typescript-axios",
-				"typeMappings": "DateTime=Date"
+				"templateDir": "#{cwd}/resources/openapi/templates/typescript-axios"
 			}
 		}
   }

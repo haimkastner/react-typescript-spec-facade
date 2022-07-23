@@ -13,7 +13,7 @@ API facade built by [openapi-generator-cli](https://github.com/OpenAPITools/open
 ✨ Application Live [Demo](https://react-typescript-spec-facade.castnet.club/) ✨
 
 ---
-📙 For all info of how to create and build it, see [Perfect API Server](https://blog.castnet.club/blog/en/perfect-api-server-part-b) article in [my blog](https://blog.castnet.club/en) 📙
+📙 For all info of how to create and build it, see [Perfect API Server](https://blog.castnet.club/en/blog/perfect-api-server-part-b) article in [my blog](https://blog.castnet.club/en) 📙
 
 ---
 
