@@ -29,6 +29,17 @@ All config by env vars, see for all options in [./env.example](./.env.example):
 Hosting front UI on [Netlify](https://react-typescript-spec-facade.castnet.club/)
 
 
+### `Pase 2 - Long processing via Rest API` 
+
+
+Adding jobs infrastructure required the following implementation:  
+* A [fetch middleware]() for handling job requests and pulling the status and results.
+* Modifying [api template]() to get and pass the job options from the API consumer.
+
+
+For all info of how to implement the job infrastructure, see [Long processing via Rest API](https://blog.castnet.club/en/blog/perfect-api-server-part-c-jobs) article in [my blog](https://blog.castnet.club/en) 📑
+
+
 ## Available Scripts
 
 In the project directory, you can run:

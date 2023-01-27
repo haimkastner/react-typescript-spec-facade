@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import { ApiFacade, Ping, Pong } from './generated/swagger/api';
+import { LongProcess } from './LongProcess';
 
 function App() {
 
@@ -48,46 +49,53 @@ function App() {
         <p>
           Welcome to the React Type Script API Spec Example APP
         </p>
-        <p>
-          For triggering an API call, please type any greeting message and press "Send"
-        </p>
-        <p>
+        <div style={{ display: 'flex' }}>
           <div>
-            <div>
-              {/* The greeting input, once changed, the greeting state wil be updated */}
-              <input type={'text'} placeholder={'Type greeting to send...'} onKeyUp={(e) => setGreeting(e.target.value)} />
-            </div>
-            <div>
-              {/* The whois input, once changed, the whois state wil be updated */}
-              <input type={'text'} placeholder={'Type whois to send...'} onKeyUp={(e) => setWhois(e.target.value)} />
-            </div>
-            <div>
-              {/* The form submit input, available if both above inputs filled, once clicked, the ping request will be triggered */}
-              <input type={'submit'} value={'Send'} disabled={!greeting || !whois} onClick={sendPing} />
-            </div>
-          </div>
+            <p style={{ width: '30vw' }}>
+              For triggering an API call, please type any greeting message and press "Send"
+            </p>
+            <p>
+              <div>
+                <div>
+                  {/* The greeting input, once changed, the greeting state wil be updated */}
+                  <input type={'text'} placeholder={'Type greeting to send...'} onKeyUp={(e) => setGreeting(e.target.value)} />
+                </div>
+                <div>
+                  {/* The whois input, once changed, the whois state wil be updated */}
+                  <input type={'text'} placeholder={'Type whois to send...'} onKeyUp={(e) => setWhois(e.target.value)} />
+                </div>
+                <div>
+                  {/* The form submit input, available if both above inputs filled, once clicked, the ping request will be triggered */}
+                  <input type={'submit'} value={'Send'} disabled={!greeting || !whois} onClick={sendPing} />
+                </div>
+              </div>
 
-        </p>
-        <p>
-          {/* Show a proper message in view regarding the state */}
-          {failed && 'Send ping request failed'}
-          {sending && 'Awaiting Server...'}
-          {pong && 'API Server pong response:'}
-        </p>
-        {
-          // Show (if there is) the last pong responded from the API server.
-          !pong ? (failed || sending ? '' : '---No ping sent yet---') : <p>
-            <div>
-              {/* Show the greeting message arrived */}
-              <input type={'text'} disabled={true} value={pong.greeting} style={{ color: 'white' }} />
-            </div>
-            <div>
-              {/* Show the timestamp of the last ping as responded from the API server */}
-              <input type={'text'} disabled={true} value={new Date(pong.time).toUTCString()} style={{ color: 'white' }} />
-            </div>
-          </p>
-        }
-  
+            </p>
+            <p>
+              {/* Show a proper message in view regarding the state */}
+              {failed && 'Send ping request failed'}
+              {sending && 'Awaiting Server...'}
+              {pong && 'API Server pong response:'}
+            </p>
+            {
+              // Show (if there is) the last pong responded from the API server.
+              !pong ? (failed || sending ? '' : '---No ping sent yet---') : <p>
+                <div>
+                  {/* Show the greeting message arrived */}
+                  <input type={'text'} disabled={true} value={pong.greeting} style={{ color: 'white' }} />
+                </div>
+                <div>
+                  {/* Show the timestamp of the last ping as responded from the API server */}
+                  <input type={'text'} disabled={true} value={new Date(pong.time).toUTCString()} style={{ color: 'white' }} />
+                </div>
+              </p>
+            }
+          </div>
+          <div>
+            <LongProcess />
+          </div>
+        </div>
+
         <a
           className="App-link"
           href="https://github.com/haimkastner/node-api-spec-boilerplate"
