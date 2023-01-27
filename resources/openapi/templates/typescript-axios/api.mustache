@@ -7,9 +7,10 @@
 
 import * as url from "url";
 import { Configuration } from "./configuration";
+{{! TEMPLATE EDIT: use  fetch middleware as API caller }}
+import { fetchMiddleware } from "../../infrastructure/fetch.middleware";
+const portableFetch = fetchMiddleware;
 
-{{! TEMPLATE EDIT: use built-in fetch as API caller  }}
-const portableFetch = fetch;
 {{! TEMPLATE EDIT: config API Server URL   }}
 const BASE_PATH = process.env.REACT_APP_API_SERVER_URL || "{{{basePath}}}".replace(/\/+$/, "");
 
@@ -25,13 +26,28 @@ export const COLLECTION_FORMATS = {
     pipes: "|",
 };
 
+{{! TEMPLATE EDIT: Pass get jobs ability to the fetch middleware for job infrastructure }}
+/** The request options */
+export interface RequestOptions {
+    /** A callback to be called on each job update come from server */
+    progressCallback?: (jobProgress: JobProgress) => void;
+}
+
+{{! TEMPLATE EDIT: The job function to be called in order to get job status by pull from server. }}
+export interface JobFunction {
+    method: (xJobFlag: "OFF", jobId: string) => Promise<JobState>;
+    theThis: any;
+    requestOptions?: RequestOptions;
+}
+
 /**
  *
  * @export
  * @interface FetchAPI
  */
 export interface FetchAPI {
-    (url: string, init?: any): Promise<Response>;
+    {{! TEMPLATE EDIT: Pass get jobs ability to the fetch middleware for job infrastructure }}
+    (url: string, jobFunction: JobFunction, init?: any): Promise<Response>;
 }
 
 /**
@@ -274,11 +290,12 @@ export const {{classname}}Fp = function(configuration?: Configuration) {
          {{/allParams}}
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
-         */
-        {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Response{{/returnType}}> {
+         */  {{! TEMPLATE EDIT: Add requestOptions for job infrastructure }}
+        {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}options?: any, requestOptions?: RequestOptions): (fetch?: FetchAPI, basePath?: string) => Promise<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Response{{/returnType}}> {
             const localVarFetchArgs = {{classname}}FetchParamCreator(configuration).{{nickname}}({{#allParams}}{{paramName}}, {{/allParams}}options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                {{!  TEMPLATE EDIT: Pass get jobs and 'this' to the fetch middleware and requestOptions for job infrastructure }}
+                return fetch(basePath + localVarFetchArgs.url, { method: ApiFacade.JobsApi.getJob, theThis: this, requestOptions }, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
                         return response{{#returnType}}.json(){{/returnType}};
                     } else {
@@ -370,9 +387,9 @@ export class {{classname}} extends BaseAPI {
      * @throws {RequiredError}
      * @memberof {{classname}}
      */
-    {{! TEMPLATE EDIT: Do not allow pass options }}
-    public {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}}) {
-        return {{classname}}Fp(this.configuration).{{nickname}}({{#allParams}}{{paramName}}, {{/allParams}})(this.fetch, this.basePath);
+    {{! TEMPLATE EDIT: Do not allow pass options, add requestOptions for job infrastructure }}
+    public {{nickname}}({{#allParams}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/allParams}} requestOptions?: RequestOptions) {
+        return {{classname}}Fp(this.configuration).{{nickname}}({{#allParams}}{{paramName}}, {{/allParams}} undefined, requestOptions)(this.fetch, this.basePath);
     }
 
     {{/operation}}
